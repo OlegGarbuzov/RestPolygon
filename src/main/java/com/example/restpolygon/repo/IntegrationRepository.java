@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface PoligonServiceRepository extends JpaRepository<Ticker, Long> {
+public interface IntegrationRepository extends JpaRepository<Ticker, Long> {
 	Optional<Ticker> findByUserAndTicker(User user, String ticker);
 
 }

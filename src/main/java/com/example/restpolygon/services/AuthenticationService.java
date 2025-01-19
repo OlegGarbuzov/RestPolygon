@@ -1,5 +1,6 @@
 package com.example.restpolygon.services;
 
+import com.example.restpolygon.client.dto.TickerDto;
 import com.example.restpolygon.dto.JwtAuthenticationResponse;
 import com.example.restpolygon.dto.SignInRequest;
 import com.example.restpolygon.dto.SignUpRequest;

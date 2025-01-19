@@ -2,17 +2,17 @@ package com.example.restpolygon.entity;
 
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Setter
-@Getter
 @Entity
-@Table(name = "tickers")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "ticker")
 public class Ticker {
 
 	@Id
@@ -23,7 +23,7 @@ public class Ticker {
 	@ManyToOne(fetch = FetchType.EAGER)
 	private User user;
 
-	@Temporal(TemporalType.DATE) @Convert(converter = Jsr310JpaConverters.LocalDateConverter.class) private LocalDate date;
+	@Temporal(TemporalType.DATE) @Convert(converter = Jsr310JpaConverters.LocalDateConverter.class) private LocalDate from;
 
 	private BigDecimal open;
 	private BigDecimal close;

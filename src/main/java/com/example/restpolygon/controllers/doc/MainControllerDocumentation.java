@@ -1,9 +1,14 @@
 package com.example.restpolygon.controllers.doc;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import java.net.URISyntaxException;
 
 public interface MainControllerDocumentation {
 
@@ -21,7 +26,7 @@ public interface MainControllerDocumentation {
 					@ApiResponse(responseCode = "404", content =  @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)),
 					@ApiResponse(responseCode = "500", content =  @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
 			})
-	String saveStockRecord();
+	ResponseEntity<Void> saveStockRecord() throws URISyntaxException, JsonProcessingException;
 
 	@Operation(
 			summary = "Получения списка сохраненной информации у пользователя",
@@ -32,6 +37,6 @@ public interface MainControllerDocumentation {
 					@ApiResponse(responseCode = "404", content =  @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)),
 					@ApiResponse(responseCode = "500", content =  @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
 			})
-	void getStockRecord();
+	String getStockRecord(@PathVariable String ticker);
 
 }
