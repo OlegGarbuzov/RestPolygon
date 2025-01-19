@@ -1,4 +1,4 @@
-package com.example.restpolygon.Dto;
+package com.example.restpolygon.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;

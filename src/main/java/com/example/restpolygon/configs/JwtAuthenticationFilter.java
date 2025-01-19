@@ -1,4 +1,4 @@
-package com.example.restpolygon.Component;
+package com.example.restpolygon.configs;
 
 import com.example.restpolygon.services.JwtService;
 import com.example.restpolygon.services.UserService;

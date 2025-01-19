@@ -1,9 +1,8 @@
 package com.example.restpolygon.services;
 
-import com.example.restpolygon.exceptions.UserAlreadyExists;
-import com.example.restpolygon.repo.UserRepository;
 import com.example.restpolygon.entity.User;
-import com.example.restpolygon.enums.Role;
+import com.example.restpolygon.error.exception.UserAlreadyExists;
+import com.example.restpolygon.repo.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,77 +14,37 @@ import org.springframework.stereotype.Service;
 public class UserService {
 	private final UserRepository repository;
 
-	/**
-	 * Сохранение пользователя
-	 *
-	 * @return сохраненный пользователь
-	 */
-	public User save(User user) {
-		return repository.save(user);
+	public void save(User user) {
+		repository.save(user);
 	}
 
 
-	/**
-	 * Создание пользователя
-	 *
-	 * @return созданный пользователь
-	 */
-	public User create(User user) throws UserAlreadyExists {
+	public void create(User user) throws UserAlreadyExists {
 		if (repository.existsByUsername(user.getUsername())) {
-			// Заменить на свои исключения
-			throw new UserAlreadyExists("Пользователь с таким именем уже существует");
+			throw new UserAlreadyExists("User already exists");
 		}
 
 		if (repository.existsByEmail(user.getEmail())) {
-			throw new UserAlreadyExists("Пользователь с таким email уже существует");
+			throw new UserAlreadyExists("User with this email already exists");
 		}
 
-		return save(user);
+		save(user);
 	}
 
-	/**
-	 * Получение пользователя по имени пользователя
-	 *
-	 * @return пользователь
-	 */
 	public User getByUsername(String username) {
 		return repository.findByUsername(username)
-				.orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
+				.orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
 	}
 
-	/**
-	 * Получение пользователя по имени пользователя
-	 * <p>
-	 * Нужен для Spring Security
-	 *
-	 * @return пользователь
-	 */
 	public UserDetailsService userDetailsService() {
 		return this::getByUsername;
 	}
 
-	/**
-	 * Получение текущего пользователя
-	 *
-	 * @return текущий пользователь
-	 */
 	public User getCurrentUser() {
-		// Получение имени пользователя из контекста Spring Security
 		var username = SecurityContextHolder.getContext().getAuthentication().getName();
 		return getByUsername(username);
 	}
 
 
-	/**
-	 * Выдача прав администратора текущему пользователю
-	 * <p>
-	 * Нужен для демонстрации
-	 */
-	@Deprecated
-	public void getAdmin() {
-		var user = getCurrentUser();
-		user.setRole(Role.ROLE_ADMIN);
-		save(user);
-	}
 }

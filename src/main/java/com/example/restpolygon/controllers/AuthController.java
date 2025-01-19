@@ -1,10 +1,11 @@
 package com.example.restpolygon.controllers;
 
-import com.example.restpolygon.Dto.JwtAuthenticationResponse;
-import com.example.restpolygon.Dto.SignInRequest;
-import com.example.restpolygon.Dto.SignUpRequest;
+import com.example.restpolygon.dto.JwtAuthenticationResponse;
+import com.example.restpolygon.dto.SignInRequest;
+import com.example.restpolygon.dto.SignUpRequest;
+import com.example.restpolygon.controllers.doc.AuthControllerDocumentation;
+import com.example.restpolygon.error.exception.UserAlreadyExists;
 import com.example.restpolygon.services.AuthenticationService;
-import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,16 +17,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
-public class AuthController {
+public class AuthController implements AuthControllerDocumentation {
+
 	private final AuthenticationService authenticationService;
 
-	@Operation(summary = "Регистрация пользователя")
+
 	@PostMapping("/register")
-	public ResponseEntity<Object> signUp(@RequestBody @Valid SignUpRequest request) {
+	public ResponseEntity<JwtAuthenticationResponse> signUp(@RequestBody @Valid SignUpRequest request) throws UserAlreadyExists {
 		return authenticationService.signUp(request);
 	}
 
-	@Operation(summary = "Авторизация пользователя")
+
 	@PostMapping("/login")
 	public ResponseEntity<JwtAuthenticationResponse> signIn(@RequestBody @Valid SignInRequest request) {
 		return authenticationService.signIn(request);
