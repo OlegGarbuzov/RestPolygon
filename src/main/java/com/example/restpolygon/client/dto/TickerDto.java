@@ -15,8 +15,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class TickerDto {
 
-	private String ticker;
-	private User user;
 	private LocalDate from;
 	private BigDecimal open;
 	private BigDecimal close;

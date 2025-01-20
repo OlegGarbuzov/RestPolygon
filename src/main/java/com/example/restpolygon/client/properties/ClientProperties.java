@@ -10,10 +10,12 @@ import org.springframework.stereotype.Component;
 @Data
 @ConfigurationProperties("client")
 @EnableConfigurationProperties(ClientProperties.class)
-
 public class ClientProperties {
+
+	private String integrationServiceName;
 	private String integrationServiceRootUrl;
+	private String integrationServiceAuthorizationPrefix;
 	private String integrationServiceKey;
-	private String serviceApiKeyPrefix;
 	private String authorizationHeader;
+
 }

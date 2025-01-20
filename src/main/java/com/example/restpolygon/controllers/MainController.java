@@ -1,6 +1,7 @@
 package com.example.restpolygon.controllers;
 
-import com.example.restpolygon.client.IntegrationServiceClient;
+import com.example.restpolygon.client.IntegrationServiceClientImpl;
+import com.example.restpolygon.client.repo.IntegrationServiceClient;
 import com.example.restpolygon.controllers.doc.MainControllerDocumentation;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
@@ -16,13 +17,13 @@ import java.net.URISyntaxException;
 @RequiredArgsConstructor
 public class MainController implements MainControllerDocumentation {
 
-	private final IntegrationServiceClient integrationServiceClient;
+	private final IntegrationServiceClientImpl integrationServiceClient;
 	private final String ROOT = "/stock";
 
 	@PostMapping(ROOT)
 	@PreAuthorize("hasRole('USER')")
 	public ResponseEntity<Void> saveStockRecord() throws URISyntaxException, RestClientException, JsonProcessingException {
-		return integrationServiceClient.saveTickers("2", "2");
+		return integrationServiceClient.saveTickers("AAPL", "2025-01-15");
 
 	}
 
