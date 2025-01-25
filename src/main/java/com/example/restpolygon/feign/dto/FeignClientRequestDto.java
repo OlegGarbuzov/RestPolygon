@@ -1,6 +1,5 @@
-package com.example.restpolygon.client.dto;
+package com.example.restpolygon.feign.dto;
 
-import com.example.restpolygon.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,8 +12,9 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TickerDto {
+public class FeignClientRequestDto {
 
+	private String symbol;
 	private LocalDate from;
 	private BigDecimal open;
 	private BigDecimal close;

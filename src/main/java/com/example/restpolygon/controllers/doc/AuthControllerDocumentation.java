@@ -1,14 +1,16 @@
 package com.example.restpolygon.controllers.doc;
 
-import com.example.restpolygon.dto.JwtAuthenticationResponse;
-import com.example.restpolygon.dto.SignInRequest;
-import com.example.restpolygon.dto.SignUpRequest;
-import com.example.restpolygon.error.exception.UserAlreadyExists;
+
+import com.example.restpolygon.client.dto.JwtAuthenticationResponseDto;
+import com.example.restpolygon.client.dto.SignInRequestDto;
+import com.example.restpolygon.client.dto.SignUpRequestDto;
+import com.example.restpolygon.error.exception.UserAlreadyExistsException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+
 
 public interface AuthControllerDocumentation {
 
@@ -20,8 +22,7 @@ public interface AuthControllerDocumentation {
 					@ApiResponse(responseCode = "409", content =  @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)),
 					@ApiResponse(responseCode = "500", content =  @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
 			})
-
-	ResponseEntity<JwtAuthenticationResponse> signUp(SignUpRequest request) throws UserAlreadyExists;
+	ResponseEntity<JwtAuthenticationResponseDto> signUp(SignUpRequestDto request) throws UserAlreadyExistsException;
 
 	@Operation(
 			summary = "Авторизация пользователя",
@@ -31,6 +32,6 @@ public interface AuthControllerDocumentation {
 					@ApiResponse(responseCode = "403", content =  @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)),
 					@ApiResponse(responseCode = "500", content =  @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
 			})
-	ResponseEntity<JwtAuthenticationResponse> signIn(SignInRequest request);
+	ResponseEntity<JwtAuthenticationResponseDto> signIn(SignInRequestDto request);
 
 }

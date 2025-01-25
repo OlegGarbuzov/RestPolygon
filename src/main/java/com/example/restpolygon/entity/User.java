@@ -19,10 +19,10 @@ import java.util.Set;
 @Setter
 @Table(name = "users")
 public class User implements UserDetails {
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-
     private Long id;
 
     @Column(name = "username", unique = true, nullable = false)
@@ -39,7 +39,8 @@ public class User implements UserDetails {
     private Role role;
 
     @OneToMany(cascade = CascadeType.ALL)
-    private Set<Ticker> ticker;
+    @JoinColumn(name = "user_id")
+    private Set<Ticker> tickers;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

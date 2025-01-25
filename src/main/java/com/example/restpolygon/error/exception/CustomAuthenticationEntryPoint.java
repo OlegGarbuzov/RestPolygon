@@ -1,4 +1,4 @@
-package com.example.restpolygon.exceptions;
+package com.example.restpolygon.error.exception;
 
 import com.example.restpolygon.error.dto.ErrorResponseDto;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -1,11 +1,11 @@
 package com.example.restpolygon.controllers;
 
-import com.example.restpolygon.dto.JwtAuthenticationResponse;
-import com.example.restpolygon.dto.SignInRequest;
-import com.example.restpolygon.dto.SignUpRequest;
+import com.example.restpolygon.client.dto.JwtAuthenticationResponseDto;
+import com.example.restpolygon.client.dto.SignInRequestDto;
+import com.example.restpolygon.client.dto.SignUpRequestDto;
 import com.example.restpolygon.controllers.doc.AuthControllerDocumentation;
-import com.example.restpolygon.error.exception.UserAlreadyExists;
-import com.example.restpolygon.services.AuthenticationService;
+import com.example.restpolygon.error.exception.UserAlreadyExistsException;
+import com.example.restpolygon.services.security.AuthenticationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,13 +23,13 @@ public class AuthController implements AuthControllerDocumentation {
 
 
 	@PostMapping("/register")
-	public ResponseEntity<JwtAuthenticationResponse> signUp(@RequestBody @Valid SignUpRequest request) throws UserAlreadyExists {
+	public ResponseEntity<JwtAuthenticationResponseDto> signUp(@RequestBody @Valid SignUpRequestDto request) throws UserAlreadyExistsException {
 		return authenticationService.signUp(request);
 	}
 
 
 	@PostMapping("/login")
-	public ResponseEntity<JwtAuthenticationResponse> signIn(@RequestBody @Valid SignInRequest request) {
+	public ResponseEntity<JwtAuthenticationResponseDto> signIn(@RequestBody @Valid SignInRequestDto request) {
 		return authenticationService.signIn(request);
 	}
 }

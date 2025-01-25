@@ -1,6 +1,6 @@
-package com.example.restpolygon.configs;
+package com.example.restpolygon.configs.security;
 
-import com.example.restpolygon.exceptions.CustomAuthenticationEntryPoint;
+import com.example.restpolygon.error.exception.CustomAuthenticationEntryPoint;
 import com.example.restpolygon.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

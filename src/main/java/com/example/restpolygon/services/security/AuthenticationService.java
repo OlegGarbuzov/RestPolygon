@@ -1,18 +1,19 @@
-package com.example.restpolygon.services;
+package com.example.restpolygon.services.security;
 
-import com.example.restpolygon.client.dto.TickerDto;
-import com.example.restpolygon.dto.JwtAuthenticationResponse;
-import com.example.restpolygon.dto.SignInRequest;
-import com.example.restpolygon.dto.SignUpRequest;
+import com.example.restpolygon.client.dto.JwtAuthenticationResponseDto;
+import com.example.restpolygon.client.dto.SignInRequestDto;
+import com.example.restpolygon.client.dto.SignUpRequestDto;
 import com.example.restpolygon.entity.User;
 import com.example.restpolygon.enums.Role;
-
-import com.example.restpolygon.error.exception.UserAlreadyExists;
+import com.example.restpolygon.error.exception.UserAlreadyExistsException;
+import com.example.restpolygon.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +25,7 @@ public class AuthenticationService {
 	private final PasswordEncoder passwordEncoder;
 	private final AuthenticationManager authenticationManager;
 
-	public ResponseEntity<JwtAuthenticationResponse> signUp(SignUpRequest request) throws UserAlreadyExists {
+	public ResponseEntity<JwtAuthenticationResponseDto> signUp(SignUpRequestDto request) throws UserAlreadyExistsException {
 
 		var user = User.builder()
 				.username(request.getUsername())
@@ -36,23 +37,28 @@ public class AuthenticationService {
 		userService.create(user);
 
 		var jwt = jwtService.generateToken(user);
-		JwtAuthenticationResponse jwtAuthenticationResponse = new JwtAuthenticationResponse(jwt);
+		JwtAuthenticationResponseDto jwtAuthenticationResponse = new JwtAuthenticationResponseDto(jwt);
 		return new ResponseEntity<>(jwtAuthenticationResponse, HttpStatus.CREATED);
 
 	}
 
-	public ResponseEntity<JwtAuthenticationResponse> signIn(SignInRequest request) {
-		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-				request.getUsername(),
-				request.getPassword()
-		));
+	public ResponseEntity<JwtAuthenticationResponseDto> signIn(SignInRequestDto request) throws UsernameNotFoundException {
+
+		try {
+			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+					request.getUsername(),
+					request.getPassword()
+			));
+		} catch (AuthenticationException exception) {
+			throw new UsernameNotFoundException(exception.getMessage());
+		}
 
 		var user = userService
 				.userDetailsService()
 				.loadUserByUsername(request.getUsername());
 
 		var jwt = jwtService.generateToken(user);
-		JwtAuthenticationResponse jwtAuthenticationResponse = new JwtAuthenticationResponse(jwt);
+		JwtAuthenticationResponseDto jwtAuthenticationResponse = new JwtAuthenticationResponseDto(jwt);
 		return new ResponseEntity<>(jwtAuthenticationResponse, HttpStatus.OK);
 	}
 }

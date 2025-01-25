@@ -1,4 +1,4 @@
-package com.example.restpolygon.services;
+package com.example.restpolygon.services.security;
 
 import com.example.restpolygon.entity.User;
 import io.jsonwebtoken.Claims;

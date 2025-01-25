@@ -1,5 +1,8 @@
 package com.example.restpolygon.controllers.doc;
 
+import com.example.restpolygon.client.dto.ClientResponseDto;
+import com.example.restpolygon.error.exception.DataNotFoundException;
+import com.example.restpolygon.feign.dto.SaveRequestDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -22,11 +25,11 @@ public interface MainControllerDocumentation {
 					"        \"end\": \"2022-02-03\"" +
 					"    }",
 			responses =  {
-					@ApiResponse(responseCode = "200", content =  @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)),
+					@ApiResponse(responseCode = "201"),
 					@ApiResponse(responseCode = "404", content =  @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)),
 					@ApiResponse(responseCode = "500", content =  @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
 			})
-	ResponseEntity<Void> saveStockRecord() throws URISyntaxException, JsonProcessingException;
+	ResponseEntity<Void> saveStockRecord(SaveRequestDto saveRequestDto) throws URISyntaxException, JsonProcessingException, DataNotFoundException;
 
 	@Operation(
 			summary = "Получения списка сохраненной информации у пользователя",
@@ -37,6 +40,6 @@ public interface MainControllerDocumentation {
 					@ApiResponse(responseCode = "404", content =  @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)),
 					@ApiResponse(responseCode = "500", content =  @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
 			})
-	String getStockRecord(@PathVariable String ticker);
+	ResponseEntity<ClientResponseDto> getStockRecord(@PathVariable String ticker);
 
 }

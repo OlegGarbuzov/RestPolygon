@@ -1,7 +1,7 @@
 package com.example.restpolygon.services;
 
 import com.example.restpolygon.entity.User;
-import com.example.restpolygon.error.exception.UserAlreadyExists;
+import com.example.restpolygon.error.exception.UserAlreadyExistsException;
 import com.example.restpolygon.repo.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,13 +19,13 @@ public class UserService {
 	}
 
 
-	public void create(User user) throws UserAlreadyExists {
+	public void create(User user) throws UserAlreadyExistsException {
 		if (repository.existsByUsername(user.getUsername())) {
-			throw new UserAlreadyExists("User already exists");
+			throw new UserAlreadyExistsException("User already exists");
 		}
 
 		if (repository.existsByEmail(user.getEmail())) {
-			throw new UserAlreadyExists("User with this email already exists");
+			throw new UserAlreadyExistsException("User with this email already exists");
 		}
 
 		save(user);
