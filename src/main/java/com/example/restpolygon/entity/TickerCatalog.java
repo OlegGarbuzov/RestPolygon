@@ -4,11 +4,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.RequiredArgsConstructor;
 
 @Entity
-@Data
-public class TickerWhiteList {
+@RequiredArgsConstructor
+@AllArgsConstructor
+@Builder
+public class TickerCatalog {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)

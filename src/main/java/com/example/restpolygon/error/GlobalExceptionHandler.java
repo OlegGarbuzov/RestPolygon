@@ -1,7 +1,9 @@
 package com.example.restpolygon.error;
 
 import com.example.restpolygon.error.dto.ErrorResponseDto;
+import com.example.restpolygon.error.exception.ClientRequestValidationException;
 import com.example.restpolygon.error.exception.DataNotFoundException;
+import com.example.restpolygon.error.exception.StockAlreadyExistException;
 import com.example.restpolygon.error.exception.UserAlreadyExistsException;
 import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.http.HttpStatus;
@@ -38,12 +40,29 @@ public class GlobalExceptionHandler {
 	}
 
 	@ExceptionHandler(DataNotFoundException.class)
-	public ResponseEntity<ErrorResponseDto> dataNotFound(DataNotFoundException exception) {
-		return ResponseEntity.status(HttpStatus.NOT_FOUND)
+	public ResponseEntity<ErrorResponseDto> dataNotFound() {
+		return ResponseEntity.status(HttpStatus.NO_CONTENT)
+				.body(ErrorResponseDto.builder()
+						.build());
+	}
+
+	@ExceptionHandler(ClientRequestValidationException.class)
+	public ResponseEntity<ErrorResponseDto> clientRequestValidation(ClientRequestValidationException exception) {
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 				.body(ErrorResponseDto.builder()
 						.id(UUID.randomUUID())
-						.errorCode(HttpStatus.NOT_FOUND)
-						.errorMessage("Request error:" + exception.getMessage())
+						.errorCode(HttpStatus.BAD_REQUEST)
+						.errorMessage("Request error: " + exception.getMessage())
+						.build());
+	}
+
+	@ExceptionHandler(StockAlreadyExistException.class)
+	public ResponseEntity<ErrorResponseDto> stockAlreadyExist(StockAlreadyExistException exception) {
+		return ResponseEntity.status(HttpStatus.CONFLICT)
+				.body(ErrorResponseDto.builder()
+						.id(UUID.randomUUID())
+						.errorCode(HttpStatus.CONFLICT)
+						.errorMessage("Request error: " + exception.getMessage())
 						.build());
 	}
 

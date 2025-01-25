@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 @FeignClient(value = "${client.integration.integrationServiceName}", url = "${client.integration.serviceRootUrl}", configuration = FeignConfig.class)
-public interface IntegrationServiceClient {
+public interface IntegrationServiceFeign {
 	String AUTHORIZATION_HEADER = HttpHeaders.AUTHORIZATION;
 
 	@GetMapping("/{stocksTicker}/{date}")

@@ -39,7 +39,7 @@ public class TickerService {
 	public Iterable<Ticker> getTickers(String symbol) {
 
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		return tickerRepository.findByUser(user);
+		return tickerRepository.findByUserAndSymbol(user, symbol);
 
 	}
 

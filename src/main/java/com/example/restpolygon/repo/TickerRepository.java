@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TickerRepository extends JpaRepository<Ticker, Long> {
-	Iterable<Ticker> findByUser(User user);
+	Iterable<Ticker> findByUserAndSymbol(User user, String symbol);
 
 }
