@@ -2,7 +2,8 @@ package com.example.restpolygon.services;
 
 import com.example.restpolygon.entity.Ticker;
 import com.example.restpolygon.entity.User;
-import com.example.restpolygon.feign.dto.FeignClientRequestDto;
+import com.example.restpolygon.feign.dto.FeignClientResponseDto;
+import com.example.restpolygon.feign.object.Results;
 import com.example.restpolygon.mapper.TickerMapperImpl;
 import com.example.restpolygon.repo.TickerRepository;
 import com.example.restpolygon.repo.UserRepository;
@@ -10,7 +11,11 @@ import lombok.Data;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -21,15 +26,28 @@ public class TickerService {
 	private final TickerMapperImpl tickerMapper;
 	private final UserRepository userRepository;
 
-	public void saveTicker(Set<FeignClientRequestDto> feignClientRequestDtos) {
+	public void saveTicker(FeignClientResponseDto feignClientResponseDto) {
 
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
+		List<Results> results = feignClientResponseDto.getResults();
 		Set<Ticker> tickers = new HashSet<>();
-		for(FeignClientRequestDto feignClientRequestDto : feignClientRequestDtos) {
-			Ticker ticker = tickerMapper.toTicker(feignClientRequestDto);
+		for(Results result : results) {
+
+			Instant instant = Instant.ofEpochMilli(result.getT().longValue());
+			LocalDate localDate = instant.atZone(ZoneId.systemDefault()).toLocalDate();
+
+			Ticker ticker = new Ticker();
+			ticker.setSymbol(feignClientResponseDto.getTicker());
+			ticker.setTickerDate(localDate);
 			ticker.setUser(user);
+			ticker.setOpen(result.getO());
+			ticker.setClose(result.getC());
+			ticker.setHigh(result.getH());
+			ticker.setLow(result.getL());
+
 			tickers.add(ticker);
+
 		}
 
 		tickerRepository.saveAll(tickers);

@@ -14,7 +14,7 @@ public class ClientRequestValidation {
 
 	public void stockSaveValidation (SaveRequestDto userRequest) throws ClientRequestValidationException {
 
-		if(!userRequest.getStart().isBefore(userRequest.getEnd())) {
+		if(userRequest.getEnd().isBefore(userRequest.getStart())) {
 			throw new ClientRequestValidationException("Invalid date range");
 		}
 

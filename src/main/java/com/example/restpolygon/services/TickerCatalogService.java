@@ -18,13 +18,13 @@ public class TickerCatalogService {
 
 	}
 
-	public void addTicker(String stock) throws StockAlreadyExistException {
+	public void addTicker(String ticker) throws StockAlreadyExistException {
 
 		TickerCatalog tickerCatalog = TickerCatalog.builder()
-				.symbol(stock)
+				.symbol(ticker)
 				.build();
 
-		if(!tickerCatalogRepository.existsBySymbol(stock)) {
+		if(!tickerCatalogRepository.existsBySymbol(ticker)) {
 			tickerCatalogRepository.save(tickerCatalog);
 		} else {
 			throw new StockAlreadyExistException("Stock already exist");

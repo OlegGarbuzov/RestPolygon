@@ -41,8 +41,8 @@ public class MainController implements MainControllerDocumentation {
 	 В учебных целях авторизация запроса отключена
 	 */
 	@PostMapping("/catalog/addTicker")
-	public ResponseEntity<Void> addStockInCatalog(@RequestParam("stock") String stock) throws StockAlreadyExistException {
-		tickerCatalogService.addTicker(stock);
+	public ResponseEntity<Void> addStockInCatalog(@RequestParam("ticker") String ticker) throws StockAlreadyExistException {
+		tickerCatalogService.addTicker(ticker);
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 
