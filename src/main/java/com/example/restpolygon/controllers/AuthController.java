@@ -6,13 +6,11 @@ import com.example.restpolygon.client.dto.SignUpRequestDto;
 import com.example.restpolygon.controllers.doc.AuthControllerDocumentation;
 import com.example.restpolygon.error.exception.UserAlreadyExistsException;
 import com.example.restpolygon.services.security.AuthenticationService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/user")
@@ -32,4 +30,14 @@ public class AuthController implements AuthControllerDocumentation {
 	public ResponseEntity<JwtAuthenticationResponseDto> signIn(@RequestBody @Valid SignInRequestDto request) {
 		return authenticationService.signIn(request);
 	}
+
+	@GetMapping("/refreshToken")
+	public ResponseEntity<JwtAuthenticationResponseDto> refreshToken(HttpServletRequest request) {
+		String headerAuth = request.getHeader("Authorization");
+		String refreshToken = headerAuth.substring(7);
+
+
+		return authenticationService.refreshToken(refreshToken);
+	}
+
 }

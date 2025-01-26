@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
+
 	private final UserService userService;
 	private final JwtService jwtService;
 	private final PasswordEncoder passwordEncoder;
@@ -37,8 +38,12 @@ public class AuthenticationService {
 		userService.create(user);
 
 		var jwt = jwtService.generateToken(user);
-		JwtAuthenticationResponseDto jwtAuthenticationResponse = new JwtAuthenticationResponseDto(jwt);
-		return new ResponseEntity<>(jwtAuthenticationResponse, HttpStatus.CREATED);
+		var rJwt = jwtService.generateRefreshToken(user);
+		JwtAuthenticationResponseDto jwtAuthenticationResponse = JwtAuthenticationResponseDto.builder()
+				.token(jwt)
+				.refreshToken(rJwt)
+				.build();
+		return new ResponseEntity<>(jwtAuthenticationResponse, HttpStatus.OK);
 
 	}
 
@@ -58,7 +63,30 @@ public class AuthenticationService {
 				.loadUserByUsername(request.getUsername());
 
 		var jwt = jwtService.generateToken(user);
-		JwtAuthenticationResponseDto jwtAuthenticationResponse = new JwtAuthenticationResponseDto(jwt);
+		var rJwt = jwtService.generateRefreshToken(user);
+		JwtAuthenticationResponseDto jwtAuthenticationResponse = JwtAuthenticationResponseDto.builder()
+						.token(jwt)
+						.refreshToken(rJwt)
+				.build();
 		return new ResponseEntity<>(jwtAuthenticationResponse, HttpStatus.OK);
+
 	}
+
+	public ResponseEntity<JwtAuthenticationResponseDto> refreshToken(String refreshToken) throws UsernameNotFoundException {
+
+		String userName = userService.getByUsername(jwtService.extractUserName(refreshToken)).getUsername();
+		var user = userService
+				.userDetailsService()
+				.loadUserByUsername(userName);
+
+		var jwt = jwtService.generateToken(user);
+		var rJwt = jwtService.generateRefreshToken(user);
+		JwtAuthenticationResponseDto jwtAuthenticationResponse = JwtAuthenticationResponseDto.builder()
+				.token(jwt)
+				.refreshToken(rJwt)
+				.build();
+		return new ResponseEntity<>(jwtAuthenticationResponse, HttpStatus.OK);
+
+	}
+
 }

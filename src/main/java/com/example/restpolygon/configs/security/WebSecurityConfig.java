@@ -76,4 +76,5 @@ public class WebSecurityConfig {
             throws Exception {
         return config.getAuthenticationManager();
     }
+
 }
