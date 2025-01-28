@@ -34,7 +34,6 @@ public class WebSecurityConfig {
     private static final String[] PERMIT_ALL_PATTERNS = {"/swagger-ui/**", "/swagger-resources/*", "/v3/api-docs/**", "/api/user/**"};
     private static final String[] ALLOWED_METHODS = {"GET", "POST"};
 
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)

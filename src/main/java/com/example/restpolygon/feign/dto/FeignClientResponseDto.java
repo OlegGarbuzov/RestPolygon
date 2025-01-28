@@ -1,6 +1,6 @@
 package com.example.restpolygon.feign.dto;
 
-import com.example.restpolygon.feign.object.Results;
+import com.example.restpolygon.feign.object.FeignClientResponseResultDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,6 +15,6 @@ import java.util.List;
 public class FeignClientResponseDto {
 
 	private String ticker;
-	private List<Results> results;
+	private List<FeignClientResponseResultDto> results;
 
 }

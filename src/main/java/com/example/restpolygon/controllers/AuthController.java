@@ -36,8 +36,8 @@ public class AuthController implements AuthControllerDocumentation {
 		String headerAuth = request.getHeader("Authorization");
 		String refreshToken = headerAuth.substring(7);
 
-
 		return authenticationService.refreshToken(refreshToken);
+
 	}
 
 }

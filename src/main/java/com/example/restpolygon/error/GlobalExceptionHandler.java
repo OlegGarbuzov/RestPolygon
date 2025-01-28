@@ -8,6 +8,7 @@ import com.example.restpolygon.error.exception.UserAlreadyExistsException;
 import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -63,6 +64,16 @@ public class GlobalExceptionHandler {
 						.id(UUID.randomUUID())
 						.errorCode(HttpStatus.CONFLICT)
 						.errorMessage("Request error: " + exception.getMessage())
+						.build());
+	}
+
+	@ExceptionHandler(AuthorizationDeniedException.class)
+	public ResponseEntity<ErrorResponseDto> unAuthorisedRequest(AuthorizationDeniedException exception) {
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+				.body(ErrorResponseDto.builder()
+						.id(UUID.randomUUID())
+						.errorCode(HttpStatus.UNAUTHORIZED)
+						.errorMessage("Unauthorized:" + exception.getMessage())
 						.build());
 	}
 

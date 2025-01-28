@@ -43,7 +43,7 @@ public class AuthenticationService {
 				.token(jwt)
 				.refreshToken(rJwt)
 				.build();
-		return new ResponseEntity<>(jwtAuthenticationResponse, HttpStatus.OK);
+		return new ResponseEntity<>(jwtAuthenticationResponse, HttpStatus.CREATED);
 
 	}
 

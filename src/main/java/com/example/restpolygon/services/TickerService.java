@@ -3,7 +3,7 @@ package com.example.restpolygon.services;
 import com.example.restpolygon.entity.Ticker;
 import com.example.restpolygon.entity.User;
 import com.example.restpolygon.feign.dto.FeignClientResponseDto;
-import com.example.restpolygon.feign.object.Results;
+import com.example.restpolygon.feign.object.FeignClientResponseResultDto;
 import com.example.restpolygon.mapper.TickerMapperImpl;
 import com.example.restpolygon.repo.TickerRepository;
 import com.example.restpolygon.repo.UserRepository;
@@ -30,9 +30,9 @@ public class TickerService {
 
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-		List<Results> results = feignClientResponseDto.getResults();
+		List<FeignClientResponseResultDto> results = feignClientResponseDto.getResults();
 		Set<Ticker> tickers = new HashSet<>();
-		for(Results result : results) {
+		for(FeignClientResponseResultDto result : results) {
 
 			Instant instant = Instant.ofEpochMilli(result.getT().longValue());
 			LocalDate localDate = instant.atZone(ZoneId.systemDefault()).toLocalDate();

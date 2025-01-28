@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 
 @Data
 @Builder
-public class Results {
+public class FeignClientResponseResultDto {
 
 	private BigDecimal o;
 	private BigDecimal c;

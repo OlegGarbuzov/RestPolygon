@@ -10,7 +10,6 @@ import com.example.restpolygon.feign.IntegrationServiceClientImpl;
 import com.example.restpolygon.feign.dto.SaveRequestDto;
 import com.example.restpolygon.services.TickerCatalogService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +23,8 @@ public class MainController implements MainControllerDocumentation {
 	private final IntegrationServiceClientImpl integrationServiceClient;
 	private final ClientService clientService;
 	private final TickerCatalogService tickerCatalogService;
+
+	public static final String ADD_TICKER_URI = "/catalog/addTicker";
 
 	@PostMapping()
 	@PreAuthorize("hasRole('USER')")
@@ -42,8 +43,7 @@ public class MainController implements MainControllerDocumentation {
 	 */
 	@PostMapping("/catalog/addTicker")
 	public ResponseEntity<Void> addStockInCatalog(@RequestParam("ticker") String ticker) throws StockAlreadyExistException {
-		tickerCatalogService.addTicker(ticker);
-		return new ResponseEntity<>(HttpStatus.CREATED);
+		return tickerCatalogService.addTicker(ticker);
 	}
 
 }

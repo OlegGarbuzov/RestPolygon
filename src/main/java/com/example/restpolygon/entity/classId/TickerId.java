@@ -1,5 +1,6 @@
-package com.example.restpolygon.entity;
+package com.example.restpolygon.entity.classId;
 
+import com.example.restpolygon.entity.User;
 import lombok.Data;
 
 import java.io.Serializable;

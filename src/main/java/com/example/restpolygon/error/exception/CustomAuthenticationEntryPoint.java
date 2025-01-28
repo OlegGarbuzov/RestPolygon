@@ -23,13 +23,14 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 
 	@Override
 	public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
-			response.setStatus(HttpServletResponse.SC_CONFLICT);
+
+			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 			try (PrintWriter writer = response.getWriter()) {
 				ErrorResponseDto  responseDto = ErrorResponseDto.builder()
 						.id(UUID.randomUUID())
-						.errorCode(HttpStatus.CONFLICT)
-						.errorMessage("Такой пользователь уже существует")
+						.errorCode(HttpStatus.UNAUTHORIZED)
+						.errorMessage("Unauthorized")
 						.build();
 				writer.print(objectMapper.writeValueAsString(responseDto));
 			}
