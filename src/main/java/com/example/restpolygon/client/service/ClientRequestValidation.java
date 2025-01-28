@@ -18,13 +18,9 @@ public class ClientRequestValidation {
 			throw new ClientRequestValidationException("Invalid date range");
 		}
 
-		if(!tickerCatalogService.isExist(userRequest.getTicker())) {
-			throw new ClientRequestValidationException("Unknown ticker");
-		}
-
 	}
 
-	public void stockGetValidation (String stock) throws ClientRequestValidationException {
+	public void tickerIsExistsInCatalogValidation (String stock) throws ClientRequestValidationException {
 
 		if(!tickerCatalogService.isExist(stock)) {
 			throw new ClientRequestValidationException("Unknown ticker");

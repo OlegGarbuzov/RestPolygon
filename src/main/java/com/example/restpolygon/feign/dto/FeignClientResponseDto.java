@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
@@ -15,6 +15,6 @@ import java.util.List;
 public class FeignClientResponseDto {
 
 	private String ticker;
-	private List<FeignClientResponseResultDto> results;
+	private Set<FeignClientResponseResultDto> results;
 
 }

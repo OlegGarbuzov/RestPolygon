@@ -13,8 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
-import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.UUID;
 
 @Data
@@ -27,11 +27,11 @@ public class ClientService {
 
 	public ResponseEntity<ClientResponseDto> getUserStockRecord(String symbol) throws DataNotFoundException, ClientRequestValidationException {
 
-		clientRequestValidation.stockGetValidation(symbol);
+		clientRequestValidation.tickerIsExistsInCatalogValidation(symbol);
 
 		Iterable<Ticker> tickers = tickerService.getTickers(symbol);
 
-		Set<TickerData> tickerDataSet = new HashSet<>();
+		Set<TickerData> tickerDataSet = new TreeSet<>();
 		for (Ticker ticker : tickers) {
 			tickerDataSet.add(tickerMapper.toTickerData(ticker));
 		}

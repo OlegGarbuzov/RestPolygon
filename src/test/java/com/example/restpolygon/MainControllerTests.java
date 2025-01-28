@@ -43,12 +43,16 @@ class MainControllerTests {
 	@Test
 	void getStockRecordTest() throws Exception {
 
-		UserDetails user = userRepository.findByUsername("Oleg6").get();
+		UserDetails user = userRepository.findByUsername("Oleg").get();
 
 		mockMvc.perform(get(ROOT_URI + "?ticker={ticker}", "AAPL")
 						.with(user(user)))
-				.andExpect(status().isOk())
+				.andExpect(status().is2xxSuccessful())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON));
+
+		mockMvc.perform(get(ROOT_URI + "?ticker={ticker}", "UnavailableTicker")
+						.with(user(user)))
+				.andExpect(status().isBadRequest());
 
 		mockMvc.perform(get(ROOT_URI + "?ticker={ticker}", "AAPL")
 						.with(anonymous()))
@@ -60,7 +64,7 @@ class MainControllerTests {
 	@Transactional
 	void saveStockRecordTest() throws Exception {
 
-		UserDetails user = userRepository.findByUsername("Oleg6").get();
+		UserDetails user = userRepository.findByUsername("Oleg").get();
 
 		SaveRequestDto saveRequestDto = SaveRequestDto.builder()
 				.ticker("AAPL")

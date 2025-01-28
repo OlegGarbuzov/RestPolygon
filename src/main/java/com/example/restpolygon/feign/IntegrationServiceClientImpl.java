@@ -27,6 +27,7 @@ public class IntegrationServiceClientImpl {
 	public ResponseEntity<Void> saveTickers(SaveRequestDto saveRequestDto) throws DataNotFoundException, ClientRequestValidationException {
 
 		clientRequestValidation.stockSaveValidation(saveRequestDto);
+		clientRequestValidation.tickerIsExistsInCatalogValidation(saveRequestDto.getTicker());
 
 		String authorizationToken = feignProperties.getServiceAuthorizationPrefix() + " " + feignProperties.getServiceKey();
 		String stocksTicker = saveRequestDto.getTicker();

@@ -2,6 +2,7 @@ package com.example.restpolygon.services;
 
 import com.example.restpolygon.entity.Ticker;
 import com.example.restpolygon.entity.User;
+import com.example.restpolygon.error.exception.DataNotFoundException;
 import com.example.restpolygon.feign.dto.FeignClientResponseDto;
 import com.example.restpolygon.feign.object.FeignClientResponseResultDto;
 import com.example.restpolygon.mapper.TickerMapperImpl;
@@ -14,9 +15,8 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 @Service
 @Data
@@ -26,25 +26,30 @@ public class TickerService {
 	private final TickerMapperImpl tickerMapper;
 	private final UserRepository userRepository;
 
-	public void saveTicker(FeignClientResponseDto feignClientResponseDto) {
+	public void saveTicker(FeignClientResponseDto feignClientResponseDto) throws DataNotFoundException {
 
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-		List<FeignClientResponseResultDto> results = feignClientResponseDto.getResults();
-		Set<Ticker> tickers = new HashSet<>();
+		Set<FeignClientResponseResultDto> results = feignClientResponseDto.getResults();
+		if(results == null) throw new DataNotFoundException("Empty result");
+
+		Set<Ticker> tickers = new TreeSet<>();
 		for(FeignClientResponseResultDto result : results) {
 
 			Instant instant = Instant.ofEpochMilli(result.getT().longValue());
-			LocalDate localDate = instant.atZone(ZoneId.systemDefault()).toLocalDate();
+			LocalDate tickerDate = instant.atZone(ZoneId.systemDefault()).toLocalDate();
 
-			Ticker ticker = new Ticker();
-			ticker.setSymbol(feignClientResponseDto.getTicker());
-			ticker.setTickerDate(localDate);
-			ticker.setUser(user);
-			ticker.setOpen(result.getO());
-			ticker.setClose(result.getC());
-			ticker.setHigh(result.getH());
-			ticker.setLow(result.getL());
+			if(tickerRepository.existsByUserAndSymbolAndTickerDate(user, feignClientResponseDto.getTicker(), tickerDate)) continue;
+
+			Ticker ticker = Ticker.builder()
+					.symbol(feignClientResponseDto.getTicker())
+					.tickerDate(tickerDate)
+					.user(user)
+					.open(result.getO())
+					.close(result.getC())
+					.high(result.getH())
+					.low(result.getL())
+					.build();
 
 			tickers.add(ticker);
 
@@ -57,7 +62,7 @@ public class TickerService {
 	public Iterable<Ticker> getTickers(String symbol) {
 
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		return tickerRepository.findByUserAndSymbol(user, symbol);
+		return tickerRepository.findByUserAndSymbolOrderByTickerDateAsc(user, symbol);
 
 	}
 

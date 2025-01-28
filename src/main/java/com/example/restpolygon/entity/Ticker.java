@@ -1,7 +1,6 @@
 package com.example.restpolygon.entity;
 
 
-import com.example.restpolygon.entity.classId.TickerId;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,18 +13,19 @@ import java.time.LocalDate;
 @Entity
 @Builder
 @NoArgsConstructor
-@Data
 @AllArgsConstructor
+@Data
 @Table(name = "ticker")
-@IdClass(TickerId.class)
-public class Ticker {
+public class Ticker implements Comparable<Ticker> {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	private Long id;
+
 	private String symbol;
-	@Id
+
 	private LocalDate tickerDate;
 
-	@Id
 	@ManyToOne(cascade = CascadeType.MERGE)
 	private User user;
 
@@ -34,4 +34,8 @@ public class Ticker {
 	private BigDecimal high;
 	private BigDecimal low;
 
+	@Override
+	public int compareTo(Ticker o) {
+		return this.tickerDate.compareTo(o.tickerDate);
+	}
 }

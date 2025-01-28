@@ -68,7 +68,7 @@ public class GlobalExceptionHandler {
 	}
 
 	@ExceptionHandler(AuthorizationDeniedException.class)
-	public ResponseEntity<ErrorResponseDto> unAuthorisedRequest(AuthorizationDeniedException exception) {
+	public ResponseEntity<ErrorResponseDto> unAuthorizedRequest(AuthorizationDeniedException exception) {
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
 				.body(ErrorResponseDto.builder()
 						.id(UUID.randomUUID())
