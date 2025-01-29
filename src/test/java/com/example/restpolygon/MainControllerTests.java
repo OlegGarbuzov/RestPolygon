@@ -1,6 +1,10 @@
 package com.example.restpolygon;
 
+import com.example.restpolygon.entity.TickerCatalog;
+import com.example.restpolygon.entity.User;
+import com.example.restpolygon.enums.Role;
 import com.example.restpolygon.feign.dto.SaveRequestDto;
+import com.example.restpolygon.repo.TickerCatalogRepository;
 import com.example.restpolygon.repo.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -15,6 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 
 import static com.example.restpolygon.controllers.MainController.ADD_TICKER_URI;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.anonymous;
@@ -36,14 +41,58 @@ class MainControllerTests {
 	private UserRepository userRepository;
 
 	@Autowired
+	private TickerCatalogRepository tickerCatalogRepository;
+
+	@Autowired
 	private ObjectMapper objectMapper;
 
 	private final String ROOT_URI = "/api/v1/stock";
 
 	@Test
-	void getStockRecordTest() throws Exception {
+	@Transactional
+	@WithMockUser(roles = "TEST")
+	void addStockInCatalogTest() throws Exception {
 
-		UserDetails user = userRepository.findByUsername("Oleg").get();
+		mockMvc.perform(post(ROOT_URI + ADD_TICKER_URI + "?ticker={ticker}", "TestTicker"))
+				.andExpect(status().isCreated());
+
+		mockMvc.perform(post(ROOT_URI + ADD_TICKER_URI + "?ticker={ticker}", "TestTicker")
+						.with(anonymous()))
+				.andExpect(status().isUnauthorized());
+
+	}
+
+	@Test
+	@Transactional
+	void saveAndGetStockRecordTest() throws Exception {
+
+		UserDetails user = userRepository.save(User.builder()
+				.email("testE")
+				.password("testP")
+				.role(Role.ROLE_USER)
+				.username("testU")
+				.tickers(new HashSet<>())
+				.build());
+
+		SaveRequestDto saveRequestDto = SaveRequestDto.builder()
+				.ticker("AAPL")
+				.start(LocalDate.of(2025, 1,13))
+				.end(LocalDate.of(2025, 1,14))
+				.build();
+
+		tickerCatalogRepository.save(TickerCatalog.builder()
+				.symbol("AAPL")
+				.build());
+
+		mockMvc.perform(post("/api/v1/stock")
+						.with(user(user))
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(objectMapper.writeValueAsString(saveRequestDto)))
+				.andExpect(status().isCreated());
+
+		mockMvc.perform(post("/api/v1/stock")
+						.with(anonymous()))
+				.andExpect(status().isUnauthorized());
 
 		mockMvc.perform(get(ROOT_URI + "?ticker={ticker}", "AAPL")
 						.with(user(user)))
@@ -59,44 +108,5 @@ class MainControllerTests {
 				.andExpect((status().isUnauthorized()));
 
 	}
-
-	@Test
-	@Transactional
-	void saveStockRecordTest() throws Exception {
-
-		UserDetails user = userRepository.findByUsername("Oleg").get();
-
-		SaveRequestDto saveRequestDto = SaveRequestDto.builder()
-				.ticker("AAPL")
-				.start(LocalDate.of(2025, 1,13))
-				.end(LocalDate.of(2025, 1,14))
-				.build();
-
-		mockMvc.perform(post("/api/v1/stock")
-						.with(user(user))
-						.contentType(MediaType.APPLICATION_JSON)
-						.content(objectMapper.writeValueAsString(saveRequestDto)))
-				.andExpect(status().isCreated());
-
-		mockMvc.perform(post("/api/v1/stock")
-						.with(anonymous()))
-				.andExpect(status().isUnauthorized());
-
-	}
-
-	@Test
-	@Transactional
-	@WithMockUser(roles = "TEST")
-	void addStockInCatalogTest() throws Exception {
-
-		mockMvc.perform(post(ROOT_URI + ADD_TICKER_URI + "?ticker={ticker}", "TestTicker"))
-				.andExpect(status().isCreated());
-
-		mockMvc.perform(post(ROOT_URI + ADD_TICKER_URI + "?ticker={ticker}", "TestTicker")
-				.with(anonymous()))
-				.andExpect(status().isUnauthorized());
-
-	}
-
 
 }

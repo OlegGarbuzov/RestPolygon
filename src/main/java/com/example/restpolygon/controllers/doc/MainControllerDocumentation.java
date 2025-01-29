@@ -3,7 +3,6 @@ package com.example.restpolygon.controllers.doc;
 import com.example.restpolygon.client.dto.ClientResponseDto;
 import com.example.restpolygon.error.exception.ClientRequestValidationException;
 import com.example.restpolygon.error.exception.DataNotFoundException;
-import com.example.restpolygon.error.exception.StockAlreadyExistException;
 import com.example.restpolygon.feign.dto.SaveRequestDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
@@ -55,6 +54,6 @@ public interface MainControllerDocumentation {
 					@ApiResponse(responseCode = "409", content =  @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)),
 					@ApiResponse(responseCode = "500", content =  @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
 			})
-	ResponseEntity<Void> addStockInCatalog(@RequestParam("stock") String stock) throws StockAlreadyExistException;
+	ResponseEntity<Void> addStockInCatalog(@RequestParam("stock") String stock);
 
 }

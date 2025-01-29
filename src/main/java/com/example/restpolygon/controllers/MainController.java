@@ -5,7 +5,6 @@ import com.example.restpolygon.client.dto.ClientResponseDto;
 import com.example.restpolygon.controllers.doc.MainControllerDocumentation;
 import com.example.restpolygon.error.exception.ClientRequestValidationException;
 import com.example.restpolygon.error.exception.DataNotFoundException;
-import com.example.restpolygon.error.exception.StockAlreadyExistException;
 import com.example.restpolygon.feign.IntegrationServiceClientImpl;
 import com.example.restpolygon.feign.dto.SaveRequestDto;
 import com.example.restpolygon.services.TickerCatalogService;
@@ -42,7 +41,7 @@ public class MainController implements MainControllerDocumentation {
 	 В учебных целях авторизация запроса отключена
 	 */
 	@PostMapping("/catalog/addTicker")
-	public ResponseEntity<Void> addStockInCatalog(@RequestParam("ticker") String ticker) throws StockAlreadyExistException {
+	public ResponseEntity<Void> addStockInCatalog(@RequestParam("ticker") String ticker) {
 		return tickerCatalogService.addTicker(ticker);
 	}
 

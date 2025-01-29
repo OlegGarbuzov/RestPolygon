@@ -1,0 +1,40 @@
+version: '3.1'
+services:
+  app:
+    container_name: restpolygon
+    image: restpolygon
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8083:8083"
+    environment:
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_URL=jdbc:postgresql://postgres:5433/postgres
+      - FEIGN_INTEGRATION_KEY=pEM_ADwzK9JsiwTgyXw1XK4Ro36OViz8
+      - CLIENT_TOKEN_ACCESS_KEY=53A73E5F1C4E0A2D3B5F2D784E6A1B423D6F247D1F6E5C3A596D635A75327855
+      - CLIENT_TOKEN_REFRESH_KEY=53A73E5F1C4E0A2D3B5F2D784E6A1B423D6F247D1F6E5C3A596D635A75327855
+    depends_on:
+      - postgres
+
+  postgres:
+    container_name: postgres
+    image: postgres
+    build:
+      context: ./
+      dockerfile: Dockerfile.postgres
+    ports:
+      - "5433:5433"
+    environment:
+      - PGDATA=/var/lib/postgresql/data
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - PGPORT=5433
+      - net=host
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+
+volumes:
+  postgres_data:

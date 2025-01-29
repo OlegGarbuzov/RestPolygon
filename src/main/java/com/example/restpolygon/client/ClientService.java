@@ -36,9 +36,7 @@ public class ClientService {
 			tickerDataSet.add(tickerMapper.toTickerData(ticker));
 		}
 
-		if(tickerDataSet.isEmpty()) {
-			throw new DataNotFoundException("No data");
-		}
+		if(tickerDataSet.isEmpty()) throw new DataNotFoundException("No data");
 
 		ClientResponseDto clientResponseDto = ClientResponseDto.builder()
 				.id(UUID.randomUUID())

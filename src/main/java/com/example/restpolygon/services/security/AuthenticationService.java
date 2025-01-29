@@ -37,7 +37,7 @@ public class AuthenticationService {
 
 		userService.create(user);
 
-		var jwt = jwtService.generateToken(user);
+		var jwt = jwtService.generateAccessToken(user);
 		var rJwt = jwtService.generateRefreshToken(user);
 		JwtAuthenticationResponseDto jwtAuthenticationResponse = JwtAuthenticationResponseDto.builder()
 				.token(jwt)
@@ -62,7 +62,7 @@ public class AuthenticationService {
 				.userDetailsService()
 				.loadUserByUsername(request.getUsername());
 
-		var jwt = jwtService.generateToken(user);
+		var jwt = jwtService.generateAccessToken(user);
 		var rJwt = jwtService.generateRefreshToken(user);
 		JwtAuthenticationResponseDto jwtAuthenticationResponse = JwtAuthenticationResponseDto.builder()
 						.token(jwt)
@@ -74,12 +74,12 @@ public class AuthenticationService {
 
 	public ResponseEntity<JwtAuthenticationResponseDto> refreshToken(String refreshToken) throws UsernameNotFoundException {
 
-		String userName = userService.getByUsername(jwtService.extractUserName(refreshToken)).getUsername();
+		String userName = userService.getByUsername(jwtService.extractRefreshUserName(refreshToken)).getUsername();
 		var user = userService
 				.userDetailsService()
 				.loadUserByUsername(userName);
 
-		var jwt = jwtService.generateToken(user);
+		var jwt = jwtService.generateAccessToken(user);
 		var rJwt = jwtService.generateRefreshToken(user);
 		JwtAuthenticationResponseDto jwtAuthenticationResponse = JwtAuthenticationResponseDto.builder()
 				.token(jwt)

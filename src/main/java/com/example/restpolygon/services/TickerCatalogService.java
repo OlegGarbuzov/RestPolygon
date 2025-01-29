@@ -1,7 +1,6 @@
 package com.example.restpolygon.services;
 
 import com.example.restpolygon.entity.TickerCatalog;
-import com.example.restpolygon.error.exception.StockAlreadyExistException;
 import com.example.restpolygon.repo.TickerCatalogRepository;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
@@ -20,7 +19,7 @@ public class TickerCatalogService {
 
 	}
 
-	public ResponseEntity<Void> addTicker(String ticker) throws StockAlreadyExistException {
+	public ResponseEntity<Void> addTicker(String ticker) {
 
 		TickerCatalog tickerCatalog = TickerCatalog.builder()
 				.symbol(ticker)
@@ -29,7 +28,7 @@ public class TickerCatalogService {
 		if(!tickerCatalogRepository.existsBySymbol(ticker)) {
 			tickerCatalogRepository.save(tickerCatalog);
 		} else {
-			throw new StockAlreadyExistException("Stock already exist");
+			new ResponseEntity<>(HttpStatus.OK);
 		}
 
 		return new ResponseEntity<>(HttpStatus.CREATED);
