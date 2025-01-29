@@ -1,3 +1,0 @@
-FROM postgres:17.2
-COPY init-scripts/test.sql /docker-entrypoint-initdb.d/postgres.sql
-EXPOSE 5433
