@@ -1,10 +1,9 @@
 package com.example.restpolygon.controllers.doc;
 
 
-import com.example.restpolygon.client.dto.JwtAuthenticationResponseDto;
-import com.example.restpolygon.client.dto.SignInRequestDto;
-import com.example.restpolygon.client.dto.SignUpRequestDto;
-import com.example.restpolygon.error.exception.UserAlreadyExistsException;
+import com.example.restpolygon.user.dto.JwtAuthenticationResponseDto;
+import com.example.restpolygon.user.dto.SignInRequestDto;
+import com.example.restpolygon.user.dto.SignUpRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -23,7 +22,7 @@ public interface AuthControllerDocumentation {
 					@ApiResponse(responseCode = "409", content =  @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)),
 					@ApiResponse(responseCode = "500", content =  @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
 			})
-	ResponseEntity<JwtAuthenticationResponseDto> signUp(SignUpRequestDto request) throws UserAlreadyExistsException;
+	ResponseEntity<JwtAuthenticationResponseDto> signUp(SignUpRequestDto request);
 
 	@Operation(
 			summary = "Авторизация пользователя",

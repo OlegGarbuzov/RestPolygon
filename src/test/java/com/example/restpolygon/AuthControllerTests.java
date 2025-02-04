@@ -1,9 +1,9 @@
 package com.example.restpolygon;
 
-import com.example.restpolygon.client.dto.JwtAuthenticationResponseDto;
-import com.example.restpolygon.client.dto.SignInRequestDto;
-import com.example.restpolygon.client.dto.SignUpRequestDto;
-import com.example.restpolygon.repo.UserRepository;
+import com.example.restpolygon.user.dto.JwtAuthenticationResponseDto;
+import com.example.restpolygon.user.dto.SignInRequestDto;
+import com.example.restpolygon.user.dto.SignUpRequestDto;
+import com.example.restpolygon.user.repo.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

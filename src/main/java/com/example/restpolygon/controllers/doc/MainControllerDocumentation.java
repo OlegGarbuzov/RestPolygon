@@ -1,10 +1,7 @@
 package com.example.restpolygon.controllers.doc;
 
-import com.example.restpolygon.client.dto.ClientResponseDto;
-import com.example.restpolygon.error.exception.ClientRequestValidationException;
-import com.example.restpolygon.error.exception.DataNotFoundException;
 import com.example.restpolygon.feign.dto.SaveRequestDto;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.example.restpolygon.user.dto.ClientResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -12,8 +9,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.net.URISyntaxException;
 
 public interface MainControllerDocumentation {
 
@@ -31,7 +26,7 @@ public interface MainControllerDocumentation {
 					@ApiResponse(responseCode = "404", content =  @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)),
 					@ApiResponse(responseCode = "500", content =  @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
 			})
-	ResponseEntity<Void> saveStockRecord(SaveRequestDto saveRequestDto) throws URISyntaxException, JsonProcessingException, DataNotFoundException, ClientRequestValidationException;
+	ResponseEntity<Void> saveStockRecord(SaveRequestDto saveRequestDto);
 
 	@Operation(
 			summary = "Получения списка сохраненной информации у пользователя",
@@ -43,7 +38,7 @@ public interface MainControllerDocumentation {
 					@ApiResponse(responseCode = "204", content =  @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)),
 					@ApiResponse(responseCode = "500", content =  @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
 			})
-	ResponseEntity<ClientResponseDto> getStockRecord(@PathVariable String ticker) throws DataNotFoundException, ClientRequestValidationException;
+	ResponseEntity<ClientResponseDto> getStockRecord(@PathVariable String ticker);
 
 	@Operation(
 			summary = "Добавление новой записи в каталог акций",
