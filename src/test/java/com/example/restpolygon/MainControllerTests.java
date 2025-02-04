@@ -1,11 +1,11 @@
 package com.example.restpolygon;
 
-import com.example.restpolygon.entity.TickerCatalog;
-import com.example.restpolygon.entity.User;
-import com.example.restpolygon.enums.Role;
 import com.example.restpolygon.feign.dto.SaveRequestDto;
-import com.example.restpolygon.repo.TickerCatalogRepository;
-import com.example.restpolygon.repo.UserRepository;
+import com.example.restpolygon.feign.entity.TickerCatalog;
+import com.example.restpolygon.feign.repo.TickerCatalogRepository;
+import com.example.restpolygon.user.entity.User;
+import com.example.restpolygon.user.enums.Role;
+import com.example.restpolygon.user.repo.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
