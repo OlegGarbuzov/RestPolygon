@@ -6,13 +6,13 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.29.xsd"
         objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
     <changeSet id="1738705583733-1" author="/">
-        <createSequence incrementBy="50" sequenceName="ticker_catalog_seq" startValue="1"/>
+        <createSequence incrementBy="1" sequenceName="ticker_catalog_seq" startValue="1"/>
     </changeSet>
     <changeSet id="1738705583733-2" author="/">
-        <createSequence incrementBy="50" sequenceName="ticker_seq" startValue="1"/>
+        <createSequence incrementBy="1" sequenceName="ticker_seq" startValue="1"/>
     </changeSet>
     <changeSet id="1738705583733-3" author="/">
-        <createSequence incrementBy="50" sequenceName="users_seq" startValue="1"/>
+        <createSequence incrementBy="1" sequenceName="users_seq" startValue="1"/>
     </changeSet>
     <changeSet id="1738705583733-4" author="/">
         <createTable tableName="ticker">
